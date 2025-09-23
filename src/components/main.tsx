@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { getUser, getUsers, createUser } from "./api";
 import { Box, Button, Typography, Input, TextField } from "@mui/material";
 import UsersTable from "./table";
@@ -15,15 +15,13 @@ function Table() {
     };
 
     const [users, setUsers] = useState<User[]>([]);
+    useEffect(() => {
+        // Cargar los usuarios al montar el componente
+        (async () => {
+            setUsers(await getUsers());
+        })();
+    }, []);
 
-    const [userId, setUserId] = useState<number>(1); // valor inicial 1
-
-    const [newUser, setNewUser] = useState({
-        name: "",
-        email: "",
-        status: "",
-        hola: ""
-    });
 
     return (
         <>
@@ -31,17 +29,17 @@ function Table() {
             <Box sx={{ display: 'flex', flexDirection: 'row', gap: 5, padding: 2 }}>
 
 
-                <Box className="card">
+                {/* <Box className="card"> */}
                     {/* Botón para traer todos los usuarios */}
-                    <Box>
+                    {/* <Box>
                         <Button variant="contained" onClick={async () => setUsers(await getUsers())}>
                             get users
                         </Button>
                     </Box>
-                    <br />
+                    <br /> */}
 
                     {/* Input para cambiar el ID */}
-                    <Box>
+                    {/* <Box>
                         <Input
                             type="number"
                             value={userId}
@@ -62,15 +60,13 @@ function Table() {
                             crear usuario
                         </Button>
                     </Box>
-                    <br />
+                    <br /> */}
 
 
 
-                </Box>
-                <Box>
-                    <UsersTable users={users} />
-
-                </Box>
+                {/* </Box> */}
+                    {/* <UsersTable users={users} /> */}
+                    <UsersTable users={users} setUsers={setUsers} />
             </Box>
         </>
     );

@@ -1,15 +1,18 @@
-import { useState } from "react";
 import "./App.css";
-import Table from "./components/main";
+import Main from "./components/main";
+import { ThemeProvider } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
+import theme from './theme/theme';
 
 function App() {
   //const [count, setCount] = useState(0);
 
   return (
-    <>
-      <Table />
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <Main />
       {/* <Table count={count} setCount={setCount} /> */}
-    </>
+    </ThemeProvider>
   );
 }
 
