@@ -1,22 +1,13 @@
-import { useEffect, useState } from "react";
-import Grid from "@mui/material/Grid"; // Grid v2
-import { Paper, Box, Button, Typography, Input, TextField } from "@mui/material";
-import { getUser, getUsers, createUser } from "./api";
+import { useState } from "react";
+import { Paper, Box, Button, TextField, TableContainer, Table, TableHead, TableRow, TableCell, TableBody } from "@mui/material";
+import { useAppDispatch, useAppSelector } from "../store/hooks";
+import { addUser } from "../features/users/usersSlice";
+import type { RootState } from "../store/store";
+import type { User } from "../features/users/usersSlice";
 
-type User = {
-    id?: number;
-    name: string;
-    email: string;
-    status: string;
-    hola?: string;
-};
-
-type UsersTableProps = {
-    users: User[];
-    setUsers: React.Dispatch<React.SetStateAction<User[]>>;
-};
-
-function UsersGrid({ users, setUsers }: UsersTableProps) {
+function UsersGrid() {
+    const dispatch = useAppDispatch();
+    const users = useAppSelector((state: RootState) => state.users.items);
 
     const [newUser, setNewUser] = useState({
         name: "",
@@ -28,68 +19,38 @@ function UsersGrid({ users, setUsers }: UsersTableProps) {
     return (
         <Paper sx={{ padding: 2, width: '100%', overflowX: 'auto', borderTop: '4px solid', borderTopColor: 'secondary.main' }}>
 
-            <Box className="card">
-                {/* Botón para traer todos los usuarios */}
-                {/* <Box>
-                    <Button variant="contained" onClick={async () => setUsers(await getUsers())}>
-                        get users
-                    </Button>
-                </Box> */}
-
-
-
-                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, maxWidth: 300 }}>
-                    <TextField variant="outlined" label="Nombre" value={newUser.name} onChange={(e) => setNewUser({ ...newUser, name: e.target.value })} />
-                    <TextField variant="outlined" label="Email" value={newUser.email} onChange={(e) => setNewUser({ ...newUser, email: e.target.value })} />
-                    <TextField variant="outlined" label="Status" value={newUser.status} onChange={(e) => setNewUser({ ...newUser, status: e.target.value })} />
-                    <Button variant="contained" color="secondary" onClick={() => createUser(newUser)}>
-                        crear usuario
-                    </Button>
-                </Box>
-                <br />
-
-
-
+            <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2, flexGrow: 1 }}>
+                <TextField variant="outlined" label="Nombre" value={newUser.name} onChange={(e) => setNewUser({ ...newUser, name: e.target.value })} sx={{ flexGrow: 1 }} />
+                <TextField variant="outlined" label="Email" value={newUser.email} onChange={(e) => setNewUser({ ...newUser, email: e.target.value })} sx={{ flexGrow: 1 }} />
+                <TextField variant="outlined" label="Status" value={newUser.status} onChange={(e) => setNewUser({ ...newUser, status: e.target.value })} sx={{ flexGrow: 1 }} />
+                <Button variant="contained" color="secondary" onClick={async () => { await dispatch(addUser({ name: newUser.name, email: newUser.email, status: newUser.status, hola: newUser.hola })); setNewUser({ name: "", email: "", status: "", hola: "" }); }} sx={{ flexGrow: 1 }}>
+                    crear usuario
+                </Button>
             </Box>
+            <br />
 
-
-            {/* Header row */}
-            <Grid container sx={{ fontWeight: "bold", borderBottom: "1px solid #ccc", py: 1, flexWrap: 'nowrap', bgcolor: 'secondary.main', color: 'secondary.contrastText' }}>
-                <Grid size={2}>
-                    <Typography>ID</Typography>
-                </Grid>
-                <Grid size={3}>
-                    <Typography>Name</Typography>
-                </Grid>
-                <Grid size={10}>
-                    <Typography>Email</Typography>
-                </Grid>
-                <Grid size={4}>
-                    <Typography>Status</Typography>
-                </Grid>
-            </Grid>
-
-            {/* Data rows */}
-            {users.map((user) => (
-                <Grid
-                    container
-                    key={user.id ?? user.email}
-                    sx={{ borderBottom: "1px solid #eee", py: 1, flexWrap: 'nowrap' }}
-                >
-                    <Grid size={2}>
-                        {user.id ?? "-"}
-                    </Grid>
-                    <Grid size={3}>
-                        {user.name}
-                    </Grid>
-                    <Grid size={10}>
-                        {user.email}
-                    </Grid>
-                    <Grid size={4}>
-                        {user.status}
-                    </Grid>
-                </Grid>
-            ))}
+            <TableContainer>
+                <Table size="small" aria-label="users table">
+                    <TableHead>
+                        <TableRow sx={{ bgcolor: 'secondary.main' }}>
+                            <TableCell sx={{ color: 'secondary.contrastText', fontWeight: 600, width: 100 }}>ID</TableCell>
+                            <TableCell sx={{ color: 'secondary.contrastText', fontWeight: 600, minWidth: 160 }}>Name</TableCell>
+                            <TableCell sx={{ color: 'secondary.contrastText', fontWeight: 600, minWidth: 220 }}>Email</TableCell>
+                            <TableCell sx={{ color: 'secondary.contrastText', fontWeight: 600, minWidth: 140 }}>Status</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {users.map((user: User) => (
+                            <TableRow key={user.id ?? user.email} hover>
+                                <TableCell>{user.id ?? "-"}</TableCell>
+                                <TableCell>{user.name}</TableCell>
+                                <TableCell>{user.email}</TableCell>
+                                <TableCell>{user.status}</TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            </TableContainer>
         </Paper>
     );
 }

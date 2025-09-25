@@ -1,26 +1,16 @@
-import { useEffect, useState } from "react";
-import { getUser, getUsers, createUser } from "./api";
-import { Box, Button, Typography, Input, TextField } from "@mui/material";
+import { useEffect } from "react";
+import { Box, Typography } from "@mui/material";
 import UsersTable from "./table";
+import { useAppDispatch } from "../store/hooks";
+import { fetchUsers } from "../features/users/usersSlice";
 //import Item from "../ui/item";
 
 function Table() {
-
-    type User = {
-        id?: number;
-        name: string;
-        email: string;
-        status: string;
-        hola?: string;
-    };
-
-    const [users, setUsers] = useState<User[]>([]);
+    const dispatch = useAppDispatch();
     useEffect(() => {
-        // Cargar los usuarios al montar el componente
-        (async () => {
-            setUsers(await getUsers());
-        })();
-    }, []);
+        // Cargar los usuarios al montar el componente desde Redux
+        dispatch(fetchUsers());
+    }, [dispatch]);
 
 
     return (
@@ -65,8 +55,8 @@ function Table() {
 
 
                 {/* </Box> */}
-                    {/* <UsersTable users={users} /> */}
-                    <UsersTable users={users} setUsers={setUsers} />
+                    {/* <UsersTable /> */}
+                    <UsersTable />
             </Box>
         </>
     );
