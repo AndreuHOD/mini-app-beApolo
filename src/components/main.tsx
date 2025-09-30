@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { Box, Typography } from "@mui/material";
 import UsersTable from "./table";
 import { useAppDispatch } from "../store/hooks";
-import { fetchUsers } from "../features/users/usersSlice";
+import { fetchUsers } from "../features/usersSlice";
 //import Item from "../ui/item";
 
 function Table() {

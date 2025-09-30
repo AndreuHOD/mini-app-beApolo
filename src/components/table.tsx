@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Paper, Box, Button, TextField, TableContainer, Table, TableHead, TableRow, TableCell, TableBody } from "@mui/material";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
-import { addUser } from "../features/users/usersSlice";
+import { addUser } from "../features/usersSlice";
 import type { RootState } from "../store/store";
-import type { User } from "../features/users/usersSlice";
+import type { User } from "../features/usersSlice";
 
 function UsersGrid() {
     const dispatch = useAppDispatch();

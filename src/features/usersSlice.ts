@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import { getUsers, createUser } from '../../components/api';
+import { getUsers, createUser } from '../components/api';
 
 export type User = {
   id?: number;
