@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Paper, Box, Button, TextField, TableContainer, Table, TableHead, TableRow, TableCell, TableBody } from "@mui/material";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
-import { addUser } from "../features/usersSlice";
+import { addUserRequest } from "../features/usersSlice";
 import type { RootState } from "../store/store";
 import type { User } from "../features/usersSlice";
 
@@ -23,7 +23,7 @@ function UsersGrid() {
                 <TextField variant="outlined" label="Nombre" value={newUser.name} onChange={(e) => setNewUser({ ...newUser, name: e.target.value })} sx={{ flexGrow: 1 }} />
                 <TextField variant="outlined" label="Email" value={newUser.email} onChange={(e) => setNewUser({ ...newUser, email: e.target.value })} sx={{ flexGrow: 1 }} />
                 <TextField variant="outlined" label="Status" value={newUser.status} onChange={(e) => setNewUser({ ...newUser, status: e.target.value })} sx={{ flexGrow: 1 }} />
-                <Button variant="contained" color="secondary" onClick={async () => { await dispatch(addUser({ name: newUser.name, email: newUser.email, status: newUser.status, hola: newUser.hola })); setNewUser({ name: "", email: "", status: "", hola: "" }); }} sx={{ flexGrow: 1 }}>
+                <Button variant="contained" color="secondary" onClick={async () => { await dispatch(addUserRequest({ name: newUser.name, email: newUser.email, status: newUser.status, hola: newUser.hola })); /*setNewUser({ name: "", email: "", status: "", hola: "" });*/ }} sx={{ flexGrow: 1 }}>
                     crear usuario
                 </Button>
             </Box>
